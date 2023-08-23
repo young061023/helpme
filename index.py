@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file, Response
+from flask import Flask, render_template, send_file, Response, request
 import pymysql
 import requests
 from gtts import gTTS
@@ -23,6 +23,69 @@ class_names_model1 = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
 class_names_model2 = ['Black', 'Blue', 'Green', 'Pink', 'Red', 'White', 'Yellow']
 
 class_names_model3 = ['Dot', 'Floral', 'Plain', 'Striped']
+
+
+def preprocess_image(image):
+    # 이미지 전처리
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = cv2.resize(image, (224, 224))
+    image = image / 255.0
+    image = np.expand_dims(image, axis=0)
+    return image
+
+def predict_image(image):
+    # 이미지 전처리
+    input_image = preprocess_image(image)
+
+    # 각 모델 예측
+    predictions_model1 = model1.predict(input_image)
+    predicted_class_model1 = np.argmax(predictions_model1)
+    class_name_model1 = class_names_model1[predicted_class_model1]
+
+    predictions_model2 = model2.predict(input_image)
+    predicted_class_model2 = np.argmax(predictions_model2)
+    class_name_model2 = class_names_model2[predicted_class_model2]
+
+    predictions_model3 = model3.predict(input_image)
+    predicted_class_model3 = np.argmax(predictions_model3)
+    class_name_model3 = class_names_model3[predicted_class_model3]
+
+    return class_name_model1, class_name_model2, class_name_model3
+
+def run_prediction(image_path):
+    image = cv2.imread(image_path)
+    input_frame = cv2.resize(image, (28, 28))
+    input_frame = cv2.cvtColor(input_frame, cv2.COLOR_BGR2GRAY)
+    input_frame = input_frame / 255.0
+    input_frame = np.expand_dims(input_frame, axis=0)
+
+    predictions1 = model1.predict(input_frame)
+    predicted_class1 = class_names_model1[np.argmax(predictions1)]
+
+    input_frame_model2 = cv2.resize(image, (224, 224))
+    input_frame_model2 = cv2.cvtColor(input_frame_model2, cv2.COLOR_BGR2RGB)
+    input_frame_model2 = input_frame_model2 / 255.0
+    input_frame_model2 = np.expand_dims(input_frame_model2, axis=0)
+    predictions2 = model2.predict(input_frame_model2)
+    predicted_class2 = class_names_model2[np.argmax(predictions2)]
+
+    input_frame_model3 = cv2.resize(image, (224, 224))
+    input_frame_model3 = cv2.cvtColor(input_frame_model3, cv2.COLOR_BGR2RGB)
+    input_frame_model3 = input_frame_model3 / 255.0
+    input_frame_model3 = np.expand_dims(input_frame_model3, axis=0)
+    predictions3 = model3.predict(input_frame_model3)
+    predicted_class3 = class_names_model3[np.argmax(predictions3)]
+
+    return predicted_class1, predicted_class2, predicted_class3
+
+@app.route('/image')
+def image_prediction():
+    image_path = "static/captured_image.jpg"  # 이미지 파일 경로
+    predicted_class1, predicted_class2, predicted_class3 = run_prediction(image_path)
+    return render_template('image.html', image_path=image_path,
+                           predicted_class1=predicted_class1,
+                           predicted_class2=predicted_class2,
+                           predicted_class3=predicted_class3)
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
@@ -68,6 +131,10 @@ def generate_frames():
 
     cap.release()
     cv2.destroyAllWindows()
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/')
 def main_page():
@@ -149,15 +216,88 @@ def weather():
 
     return render_template('weather.html', tts_file=audio_file_path, city=city, description=weather_description, temperature=temperature, humidity=humidity)
 
-@app.route('/detection')
+@app.route('/detection', methods=['GET', 'POST'])
 def detection():
-    return render_template('detection.html')
+    if request.method == 'POST':
+        if 'image' in request.files:
+            image = request.files['image']
+            image_path = os.path.join('static', 'captured_image.jpg')
+            image.save(image_path)
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+            # 이미지 전처리 및 모델 예측
+            input_frame = cv2.imread(image_path)
+            input_frame = cv2.resize(input_frame, (28, 28))
+            input_frame = cv2.cvtColor(input_frame, cv2.COLOR_BGR2GRAY)
+            input_frame = input_frame / 255.0
+            input_frame = np.expand_dims(input_frame, axis=0)
+            predictions1 = model1.predict(input_frame)
+            predicted_class1 = np.argmax(predictions1)
+            class_name1 = class_names_model1[predicted_class1]
+
+            input_frame_model2 = cv2.imread(image_path)
+            input_frame_model2 = cv2.resize(input_frame_model2, (224, 224))
+            input_frame_model2 = cv2.cvtColor(input_frame_model2, cv2.COLOR_BGR2RGB)
+            input_frame_model2 = input_frame_model2 / 255.0
+            input_frame_model2 = np.expand_dims(input_frame_model2, axis=0)
+            predictions2 = model2.predict(input_frame_model2)
+            predicted_class2 = np.argmax(predictions2)
+            class_name2 = class_names_model2[predicted_class2]
+
+            input_frame_model3 = cv2.imread(image_path)
+            input_frame_model3 = cv2.resize(input_frame_model3, (224, 224))
+            input_frame_model3 = cv2.cvtColor(input_frame_model3, cv2.COLOR_BGR2RGB)
+            input_frame_model3 = input_frame_model3 / 255.0
+            input_frame_model3 = np.expand_dims(input_frame_model3, axis=0)
+            predictions3 = model3.predict(input_frame_model3)
+            predicted_class3 = np.argmax(predictions3)
+            class_name3 = class_names_model3[predicted_class3]
+
+            return render_template('detection.html', class_name1=class_name1, class_name2=class_name2, class_name3=class_name3)
+        else:
+            return 'No image found in request'
+    else:
+        return render_template('detection.html')
 
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'image' in request.files:
+        image = request.files['image']
+        image_path = os.path.join('static', 'captured_image.jpg')
+        image.save(image_path)
+
+        # 이미지 전처리 및 모델 예측
+        input_frame = cv2.imread(image_path)
+        input_frame = cv2.resize(input_frame, (28, 28))
+        input_frame = cv2.cvtColor(input_frame, cv2.COLOR_BGR2GRAY)
+        input_frame = input_frame / 255.0
+        input_frame = np.expand_dims(input_frame, axis=0)
+        predictions1 = model1.predict(input_frame)
+        predicted_class1 = np.argmax(predictions1)
+        class_name1 = class_names_model1[predicted_class1]
+
+        input_frame_model2 = cv2.imread(image_path)
+        input_frame_model2 = cv2.resize(input_frame_model2, (224, 224))
+        input_frame_model2 = cv2.cvtColor(input_frame_model2, cv2.COLOR_BGR2RGB)
+        input_frame_model2 = input_frame_model2 / 255.0
+        input_frame_model2 = np.expand_dims(input_frame_model2, axis=0)
+        predictions2 = model2.predict(input_frame_model2)
+        predicted_class2 = np.argmax(predictions2)
+        class_name2 = class_names_model2[predicted_class2]
+
+        input_frame_model3 = cv2.imread(image_path)
+        input_frame_model3 = cv2.resize(input_frame_model3, (224, 224))
+        input_frame_model3 = cv2.cvtColor(input_frame_model3, cv2.COLOR_BGR2RGB)
+        input_frame_model3 = input_frame_model3 / 255.0
+        input_frame_model3 = np.expand_dims(input_frame_model3, axis=0)
+        predictions3 = model3.predict(input_frame_model3)
+        predicted_class3 = np.argmax(predictions3)
+        class_name3 = class_names_model3[predicted_class3]
+
+        return render_template('detection.html', image_path=image_path, class_name1=class_name1, class_name2=class_names_model2[predicted_class2], class_name3=class_name3)
+    else:
+        return 'No image found in request'
+    
 @app.route('/static/<path:filename>')
 def static_file(filename):
     return send_file(filename)

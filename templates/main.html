@@ -32,15 +32,15 @@
     <script>
         // MP3 파일 경로들
         const mp3FilePaths = [
-            '/static/날씨.mp3',
-            '/static/색상.mp3',
-            '/static/색상.mp3',
-            '/static/날씨.mp3'
+            '/static/내옷인식.mp3',
+            '/static/내옷장.mp3',
+            '/static/날씨확인.mp3',
+            '/static/커뮤니티.mp3'
         ];
-
+    
         // 오디오 플레이어 생성
         const audioPlayer = new Audio();
-
+    
         // 이미지를 클릭하면 호출되는 함수
         function playAudio(index) {
             const mp3FilePath = mp3FilePaths[index];
@@ -54,38 +54,54 @@
         <br>
         <h1 class="text-center" style="background-color:black">Chic Sense</h1>
     </div>
-    <a href="/main1" class="btn btn-secondary btn-lg btn-block btn-lg active" role="button" aria-pressed="true">색상 바꾸기</a>
+    <a href="/main1" class="btn btn-secondary btn-lg btn-block btn-lg active" rolse="button" aria-pressed="true" onclick="playAudio(4)">색상 바꾸기</a>
     <div class="ccard">
-        <div class="card" style="width: 18rem;">
-            <img src="/static/fashion.jpeg" class="card-img-top" onclick="playAudio(0)">
-            <div class="card-body">
-                <h5 class="card-title text-white">내 옷 인식</h5>
-                <p class="card-text text-white">옷 인식</p>
+        <a href="/detection" style="text-decoration: none; color: inherit;" onclick="playAudio(0)">
+            <div class="card" style="width: 18rem; background-color:black">
+                <img src="/static/detection_image.png" class="card-img-top">
+                <div class="card-body">
+                    <!-- .text-white 클래스를 .text-yellow로 변경 -->
+                    <h5 class="card-title text-yellow">내 옷 인식</h5>
+                    <p class="card-text text-yellow">옷 인식</p>
+                </div>
             </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <img src="/static/clothes.jpeg" class="card-img-top" onclick="playAudio(1)">
-            <div class="card-body">
-                <h5 class="card-title text-white">내 옷장</h5>
-                <p class="card-text text-white">내 옷장</p>
+        </a>
+
+        <a href="/index1" style="text-decoration: none; color: inherit;" onclick="playAudio(0)">
+            <div class="card" style="width: 18rem; background-color:black">
+                <img src="/static/cloth_image.png" class="card-img-top">
+                <div class="card-body">
+                    <!-- .text-white 클래스를 .text-yellow로 변경 -->
+                    <h5 class="card-title text-yellow">내 옷장</h5>
+                    <p class="card-text text-yellow">내 옷장</p>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
+
     <div class="caard">
-        <div class="card" style="width: 18rem;">
-            <img src="/static/default.png" class="card-img-top" onclick="playAudio(2)">
-            <div class="card-body">
-                <h5 class="card-title text-white">날씨 확인</h5>
-                <p class="card-text text-white">날씨 확인</p>
+
+        <a href="/index1" style="text-decoration: none; color: inherit;" onclick="playAudio(0)">
+            <div class="card" style="width: 18rem; background-color:black">
+                <img src="/static/weather_image.png" class="card-img-top">
+                <div class="card-body">
+                    <!-- .text-white 클래스를 .text-yellow로 변경 -->
+                    <h5 class="card-title text-yellow">날씨 확인</h5>
+                    <p class="card-text text-yellow">날씨 확인</p>
+                </div>
             </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <img src="/static/community.png" class="card-img-top" onclick="playAudio(3)">
-            <div class="card-body">
-                <h5 class="card-title text-white">커뮤니티</h5>
-                <p class="card-text text-white">커뮤니티</p>
+        </a>
+
+        <a href="/index1" style="text-decoration: none; color: inherit;" onclick="playAudio(0)">
+            <div class="card" style="width: 18rem; background-color:black">
+                <img src="/static/community_image.png" class="card-img-top">
+                <div class="card-body">
+                    <!-- .text-white 클래스를 .text-yellow로 변경 -->
+                    <h5 class="card-title text-yellow">커뮤니티</h5>
+                    <p class="card-text text-yellow">커뮤니티</p>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <hr>
     <div>
