@@ -32,6 +32,64 @@
 
             alert(message);
         }
+
+        const mp3FilePath1 = '/static/음음.mp3';
+        const mp3FilePath2 = '/static/음음.mp3';
+        const mp3FilePath3 = '/static/음음.mp3';
+        const mp3FilePath4 = '/static/음음.mp3';
+        const weatherButtonMP3 = '/static/날씨.mp3';
+        const colorChange = '/static/색상.mp3';
+
+        const audioPlayer = new Audio();
+        let currentPlaying = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function playAudio(filePath) {
+                if (currentPlaying) {
+                    currentPlaying.pause();
+                }
+                audioPlayer.src = filePath;
+                audioPlayer.play();
+                currentPlaying = audioPlayer;
+            }
+
+            const colorChangeButton = document.querySelectorAll('.nav-link[href="/index1"]');
+            colorChangeButton.addEventListener('click', function() {
+                playAudio(colorChange); // 원하는 MP3 파일 경로로 수정
+            });
+
+            const weatherButton = document.querySelectorAll('.dropdown-item[href="/weather"]');
+            weatherButton.addEventListener('click', function() {
+                playAudio(weatherButtonMP3);
+            });
+
+            function test()  {
+                alert('안녕하세요');
+            }
+
+            const buttons = document.querySelectorAll('.btn-primary');
+            buttons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    switch (index) {
+                        case 0:
+                            playAudio(mp3FilePath1);
+                            break;
+                        case 1:
+                            playAudio(mp3FilePath2);
+                            break;
+                        case 2:
+                            playAudio(mp3FilePath3);
+                            break;
+                        case 3:
+                            playAudio(mp3FilePath4);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            });
+        });
     </script>
 </head>
 <body style="background-color:black">
@@ -48,7 +106,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index1">색상 바꾸기<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/index1" onclick='test()' >색상 바꾸기<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +114,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/weather">날씨 확인</a>
-                            <a class="dropdown-item" href="#">내 옷 인식</a>
+                            <a class="dropdown-item" href="/cloth">내 옷 인식</a>
                         </div>
                     </li>
                 </ul>
