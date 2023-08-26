@@ -12,83 +12,35 @@
         }
         .ccard {
             display: flex;
-            align-items: center;
+            align-items: stretch; /* 카드의 높이를 최대로 늘립니다 */
             justify-content: center;
             text-align: center;
-         }
-        .caard {
+        }
+        .card {
+            width: 18rem;
+            margin: 10px; /* 카드 사이의 간격을 늘립니다 */
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            flex-direction: column; /* 내부 내용을 위에서 아래로 정렬합니다 */
         }
     </style>
+
     <script>
-        function showWeatherAlert(city, description, temperature, humidity) {
-            var message = city + "의 날씨 정보\n"
-                + "날씨: " + description + "\n"
-                + "온도: " + temperature + "°C\n"
-                + "습도: " + humidity + "%";
-
-            alert(message);
-        }
-
-        const mp3FilePath1 = '/static/음음.mp3';
-        const mp3FilePath2 = '/static/음음.mp3';
-        const mp3FilePath3 = '/static/음음.mp3';
-        const mp3FilePath4 = '/static/음음.mp3';
-        const weatherButtonMP3 = '/static/날씨.mp3';
-        const colorChange = '/static/색상.mp3';
-
-        const audioPlayer = new Audio();
-        let currentPlaying = null;
-
         document.addEventListener('DOMContentLoaded', function() {
-
-            function playAudio(filePath) {
-                if (currentPlaying) {
-                    currentPlaying.pause();
-                }
-                audioPlayer.src = filePath;
-                audioPlayer.play();
-                currentPlaying = audioPlayer;
-            }
-
-            const colorChangeButton = document.querySelectorAll('.nav-link[href="/index1"]');
-            colorChangeButton.addEventListener('click', function() {
-                playAudio(colorChange); // 원하는 MP3 파일 경로로 수정
-            });
-
-            const weatherButton = document.querySelectorAll('.dropdown-item[href="/weather"]');
-            weatherButton.addEventListener('click', function() {
-                playAudio(weatherButtonMP3);
-            });
-
-            function test()  {
-                alert('안녕하세요');
-            }
-
-            const buttons = document.querySelectorAll('.btn-primary');
-            buttons.forEach((button, index) => {
+            const likeButtons = document.querySelectorAll('.like-button');
+            likeButtons.forEach((button) => {
                 button.addEventListener('click', function() {
-                    switch (index) {
-                        case 0:
-                            playAudio(mp3FilePath1);
-                            break;
-                        case 1:
-                            playAudio(mp3FilePath2);
-                            break;
-                        case 2:
-                            playAudio(mp3FilePath3);
-                            break;
-                        case 3:
-                            playAudio(mp3FilePath4);
-                            break;
-                        default:
-                            break;
-                    }
+                    toggleLikeState(button);
                 });
             });
+            
+            function toggleLikeState(button) {
+                const likeIcon = button.querySelector('.like-icon');
+                if (likeIcon.textContent === '♡') {
+                    likeIcon.textContent = '♥';
+                } else {
+                    likeIcon.textContent = '♡';
+                }
+            }
         });
     </script>
 </head>
@@ -106,7 +58,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index1" onclick='test()' >색상 바꾸기<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/index1" >색상 바꾸기<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -124,45 +76,61 @@
     
     
     <div class="ccard">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+        <div class="card">
+            <img src="/static/youngminwhite.png" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title">{{ data_list[0][1] }}</h5>
-                <p class="card-text">{{ data_list[0][2]  }}</p>
+                <h5 class="card-title">검은색 셔츠</h5>
+                <p class="card-text">8월 6일</p>
                 <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
-
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+        
+        <div class="card">
+            <img src="/static/회색.png" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title">{{ data_list[1][1] }}</h5>
-                <p class="card-text">{{ data_list[1][2]  }}</p>
+                <h5 class="card-title">회색 티셔츠</h5>
+                <p class="card-text">8월 9일</p>
                 <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="caard d-flex justify-content-center">
+    <div class="card">
+        <img src="/static/youngminakr.png" class="card-img-top">
+        <div class="card-body d-flex flex-column align-items-center">
+            <h5 class="card-title text-center">도트 검은색 티셔츠</h5>
+            <p class="card-text text-center">8월 9일</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="caard">
-
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ data_list[2][1] }}</h5>
-                <p class="card-text">{{ data_list[2][2]  }}</p>
+    <div class="card">
+        <img src="/static/youjgn.png" class="card-img-top">
+        <div class="card-body d-flex flex-column align-items-center">
+            <h5 class="card-title text-center">하얀색 티셔츠</h5>
+            <p class="card-text text-center">8월 20일</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
                 <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
-            </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ data_list[3][1] }}</h5>
-                <p class="card-text">{{ data_list[3][2]  }}</p>
-                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
     </div>
+</div>
+      
     <hr>
     <div>
         <ul class="pagination justify-content-center">

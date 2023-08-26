@@ -4,34 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chic Sense</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <style>
-        .nav-link{
-            color: #000000;
-        }
         .container {
-            color: #000000;
+            color: #ffffff;
         }
         .ccard {
-            color: #000000;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-         }
-        .caard {
-            color: #000000;
-            display: flex;
-            align-items: center;
+            align-items: stretch; /* 카드의 높이를 최대로 늘립니다 */
             justify-content: center;
             text-align: center;
         }
+        .card {
+            width: 18rem;
+            margin: 10px; /* 카드 사이의 간격을 늘립니다 */
+            display: flex;
+            flex-direction: column; /* 내부 내용을 위에서 아래로 정렬합니다 */
+        }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButtons = document.querySelectorAll('.like-button');
+            likeButtons.forEach((button) => {
+                button.addEventListener('click', function() {
+                    toggleLikeState(button);
+                });
+            });
+            
+            function toggleLikeState(button) {
+                const likeIcon = button.querySelector('.like-icon');
+                if (likeIcon.textContent === '♡') {
+                    likeIcon.textContent = '♥';
+                } else {
+                    likeIcon.textContent = '♡';
+                }
+            }
+        });
+    </script>
 </head>
-<body style="background-color:white">
+<body style="background-color:black">
     <div class="container">
         <br>
-        <h1 class="text-center text-black" style="background-color:white">Chic Sense</h1>
+        <h1 class="text-center text-white" style="background-color:black">Chic Sense</h1>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -42,7 +58,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index2">색상 바꾸기<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/index1" >색상 바꾸기<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,53 +66,71 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/weather">날씨 확인</a>
-                            <a class="dropdown-item" href="#">내 옷 인식</a>
+                            <a class="dropdown-item" href="/cloth">내 옷 인식</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    
+    
     <div class="ccard">
-        <div class="card" style="width: 18rem; background-color:black">
-            <img src="..." class="card-img-top" alt="...">
+        <div class="card">
+            <img src="/static/youngminwhite.png" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title text-white">data_list[0][1]</h5>
-                <p class="card-text text-white">data_list[0][2]</p>
-                <a href="#" class="btn btn-primary text-body" style="border: none; background-color:white">자세히 보러가기</a>
+                <h5 class="card-title">검은색 셔츠</h5>
+                <p class="card-text">min</p>
+                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
-
-        <div class="card" style="width: 18rem; background-color:black">
-            <img src="..." class="card-img-top" alt="...">
+        
+        <div class="card">
+            <img src="/static/회색.png" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title text-white">data_list[1][1]</h5>
-                <p class="card-text text-white">data_list[1][2]</p>
-                <a href="#" class="btn btn-primary text-body" style="border: none; background-color:white">자세히 보러가기</a>
+                <h5 class="card-title">회색 티셔츠</h5>
+                <p class="card-text">youngmin</p>
+                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="caard d-flex justify-content-center">
+    <div class="card">
+        <img src="/static/KakaoTalk_Photo_2023-08-23-23-40-23 002.jpeg" class="card-img-top">
+        <div class="card-body d-flex flex-column align-items-center">
+            <h5 class="card-title text-center">검은색 티셔츠</h5>
+            <p class="card-text text-center">rabbit</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="caard">
-
-        <div class="card" style="width: 18rem; background-color:black">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-white">data_list[2][1]</h5>
-                <p class="card-text text-white">data_list[2][2]</p>
-                <a href="#" class="btn btn-primary text-body" style="border: none; background-color:white">자세히 보러가기</a>
-            </div>
-        </div>
-
-        <div class="card" style="width: 18rem; background-color:black">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-white">data_list[3][1]</h5>
-                <p class="card-text text-white">data_list[3][2]</p>
-                <a href="#" class="btn btn-primary text-body" style="border: none; background-color:white">자세히 보러가기</a>
+    <div class="card">
+        <img src="/static/KakaoTalk_Photo_2023-08-23-23-40-23 003.jpeg" class="card-img-top">
+        <div class="card-body d-flex flex-column align-items-center">
+            <h5 class="card-title text-center">하얀색 셔츠</h5>
+            <p class="card-text text-center">kim</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <a href="#" class="btn btn-primary" style="border: none; background-color:black">자세히 보러가기</a>
+                <button class="btn btn-secondary like-button" style="border: none;">
+                    <span class="like-icon">♡</span>
+                </button>
             </div>
         </div>
     </div>
+</div>
+      
     <hr>
     <div>
         <ul class="pagination justify-content-center">
